@@ -2,6 +2,10 @@ import Commands.Ips;
 import Commands.helpcommant;
 import Commands.secret_command;
 import Commands.status;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import io.github.cdimascio.dotenv.Dotenv;
 import moderation.Regeln;
 import support.Ticketsystem;
@@ -17,17 +21,15 @@ import javax.security.auth.login.LoginException;
 
 public class Main {
 
-    public static void main(String[] args) throws LoginException {
+    public static String prefix = ".";
+    public AudioPlayerManager audioPlayerManager;
+
+    public void main(String[] args) throws LoginException {
         Dotenv dotenv = Dotenv.load();
         String token = dotenv.get("DISCORD_BOT_TOKEN");
 
-        String prefix = ".";
+        String status = Main.prefix + "help";
 
-        String status;
-
-        status = prefix + "help";
-
-        System.out.println("Der Bot ist Online!");
 
         JDABuilder script = JDABuilder.createDefault(token);
 
@@ -51,8 +53,15 @@ public class Main {
 
         script.setActivity(Activity.watching(status));
 
+        this.audioPlayerManager = new DefaultAudioPlayerManager();
+
+
         JDA bot = script.build();
 
+        AudioSourceManagers.registerRemoteSources(audioPlayerManager);
+        audioPlayerManager.getConfiguration().setFilterHotSwapEnabled(true);
+
+        System.out.println("Der Bot ist Online!");
 
     }
 

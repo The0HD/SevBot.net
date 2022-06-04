@@ -1,5 +1,6 @@
 package support;
 
+import com.sun.tools.javac.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Emoji;
@@ -12,7 +13,8 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonInteraction;
 
 public class VerifySystem extends ListenerAdapter {
     public void onMessageReceived (MessageReceivedEvent ver) {
-        if (ver.getMessage().getContentStripped().equalsIgnoreCase(".setup Verify")){
+
+        if (ver.getMessage().getContentStripped().equals(".setup Verify")){
             if (ver.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle("Verifiziere dich hier!");
